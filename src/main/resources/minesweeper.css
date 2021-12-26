@@ -1,0 +1,5 @@
+Button{
+    -fx-min-width:27;
+    -fx-min-height:22;
+    -fx-border: none;
+}

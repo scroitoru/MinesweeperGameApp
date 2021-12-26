@@ -344,7 +344,7 @@
                 <Button mnemonicParsing="false" GridPane.columnIndex="16" GridPane.rowIndex="6" />
                 <Button mnemonicParsing="false" GridPane.columnIndex="17" GridPane.rowIndex="6" />
                 <Button mnemonicParsing="false" GridPane.columnIndex="18" GridPane.rowIndex="6" />
-                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="29.0" GridPane.columnIndex="19" GridPane.rowIndex="6" />
+                <Button mnemonicParsing="false" GridPane.columnIndex="19" GridPane.rowIndex="6" />
                 <Button mnemonicParsing="false" GridPane.rowIndex="5" />
                 <Button mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <Button mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />

@@ -16,6 +16,7 @@
         stylesheets="@minesweeper.css">
     <children>
         <GridPane
+                fx:id="gridPane"
                 gridLinesVisible="true"
                 layoutX="54.0"
                 layoutY="38.0"

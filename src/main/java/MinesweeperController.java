@@ -1,5 +1,7 @@
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MinesweeperController {
@@ -41,7 +43,7 @@ public class MinesweeperController {
             if(randomCell.value != MinesweeperCell.MINE) {
                 randomCell.value = MinesweeperCell.MINE;
                 //increment adjacent cells
-                MinesweeperCell [] adjacentCells  = getAdjacentCells(randomCell);
+                ArrayList<MinesweeperCell> adjacentCells  = getAdjacentCells(randomCell);
                 for (MinesweeperCell adjacentCell : adjacentCells){
                     //if adjacent is a mine, then don't increment
                     if (adjacentCell.value != MinesweeperCell.MINE){
@@ -54,23 +56,54 @@ public class MinesweeperController {
         }
     }
 
-    public MinesweeperCell [] getAdjacentCells (MinesweeperCell cell){
+    public ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
         int x = cell.x;
         int y = cell.y;
-        //TO DO: don't add cells with coordinates off the grid
-        MinesweeperCell [] adjacentCells = {
-                board[x - 1][y + 1],  //top left
-                board[x][y + 1], //top middle
-                board[x + 1][y + 1], // top right
-                board[x - 1][y], //left
-                board[x + 1][y], //right
-                board[x - 1][y - 1], //bottom left
-                board[x][y - 1], //bottom middle
-                board[x + 1][y - 1] //bottom right
-        };
+        ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
+
+        // top left
+        if (isOnGrid(x-1,y+1)){
+            adjacentCells.add(board[x - 1][y + 1]);
+        }
+        //top middle
+        if (isOnGrid(x,y+1)){
+            adjacentCells.add(board[x][y + 1]);
+        }
+        //top right
+        if (isOnGrid(x+1,y+1)){
+            adjacentCells.add(board[x + 1][y + 1]);
+        }
+        //left
+        if (isOnGrid(x-1,y)){
+            adjacentCells.add(board[x - 1][y]);
+        }
+        //right
+        if(isOnGrid(x+1,y)){
+            adjacentCells.add(board[x+1][y]);
+        }
+        //bottom left
+        if(isOnGrid(x+1,y)){
+            adjacentCells.add(board[x-1][y]);
+        }
+        //bottom middle
+        if(isOnGrid(x,y-1)){
+            adjacentCells.add(board[x][y-1]);
+        }
+        //bottom right
+        if(isOnGrid(x + 1,y-1)){
+            adjacentCells.add(board[x][y-1]);
+        }
         return adjacentCells;
     }
 
+    public boolean isOnGrid (int x, int y){
+        int minVal = 0;
+        int maxVal = boardSize - 1;
+        if ( x < minVal || x > maxVal || y < minVal ||  y > maxVal){
+            return false;
+        }
+        return true;
+    }
     public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
         if (cellValue == -1) { // mine
@@ -84,7 +117,7 @@ public class MinesweeperController {
     }
 
     public void checkAdjacentCells( MinesweeperCell cell){
-        MinesweeperCell [] adjacentCells = getAdjacentCells(cell);
+        ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (cell.value == 0){
                 //uncover cell

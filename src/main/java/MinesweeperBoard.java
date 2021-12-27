@@ -3,18 +3,30 @@ import java.util.Random;
 public class MinesweeperBoard {
 
     private final int boardSize = 20;
-    private Cell[][] board = new Cell[boardSize][boardSize];
-
+    private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
+    //private Cell[][] board = new Cell[boardSize][boardSize];
+/*
     // pass board size to constructor?
     public MinesweeperBoard() {
-        for (int x = 0; x <= boardSize; x++) {
-            for (int y = 0; y <= boardSize; y++) {
+        for (int x = 0; x < boardSize; x++) {
+            for (int y = 0; y < boardSize; y++) {
                 board[x][y] = new Cell(x, y);
             }
         }
         placeMines();
     }
+*/
+    public MinesweeperBoard(){
+        for (int x = 0; x < boardSize; x++){
+            for(int y = 0; y < boardSize; y++){
+                board[x][y] = new MinesweeperCell(x,y);
+                //shouldn't be instantiating minesweeper cells here?
+                // instead, should access the ones on the gui board?
+            }
+        }
+        placeMines();
 
+    }
     private void placeMines() {
         int nrMines = 50;
         Random randomInt = new Random();
@@ -22,12 +34,12 @@ public class MinesweeperBoard {
         while (nrMines > 0) {
             x = randomInt.nextInt(boardSize);
             y = randomInt.nextInt(boardSize);
-            Cell randomCell = board[x][y];
+            MinesweeperCell randomCell = board[x][y];
             if (randomCell.value != -1) {
                 randomCell.value = -1; // place mine (-1 = mine)
                 //increment adjacent cells
-                Cell [] adjacentCells  = getAdjacentCells(randomCell);
-                for (Cell adjacentCell : adjacentCells){
+                MinesweeperCell [] adjacentCells  = getAdjacentCells(randomCell);
+                for (MinesweeperCell adjacentCell : adjacentCells){
                     //if adjacent is a mine, then don't increment
                     if ( adjacentCell.value != -1){
                         adjacentCell.value++;
@@ -47,7 +59,7 @@ public class MinesweeperBoard {
     // right click places flag, right click again removes flag (switch? can add another boolean)
     //regular click calls the following function
 
-    public void playMove(Cell clickedCell) {
+    public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
         if (cellValue == -1) { // mine
             //reveal all cells
@@ -58,11 +70,11 @@ public class MinesweeperBoard {
         }
     }
 
-    public Cell [] getAdjacentCells (Cell cell){
+    public MinesweeperCell [] getAdjacentCells (MinesweeperCell cell){
         int x = cell.x;
         int y = cell.y;
         //TO DO: don't add cells with coordinates off the grid
-        Cell[] adjacentCells = {
+        MinesweeperCell [] adjacentCells = {
                 board[x - 1][y + 1],  //top left
                 board[x][y + 1], //top middle
                 board[x + 1][y + 1], // top right
@@ -75,9 +87,9 @@ public class MinesweeperBoard {
         return adjacentCells;
     }
 
-    public void checkAdjacentCells(Cell cell){
-        Cell [] adjacentCells = getAdjacentCells(cell);
-        for (Cell adjacentCell : adjacentCells){
+    public void checkAdjacentCells( MinesweeperCell cell){
+        MinesweeperCell [] adjacentCells = getAdjacentCells(cell);
+        for (MinesweeperCell adjacentCell : adjacentCells){
             if (cell.value == 0){
                 //uncover cell
                 checkAdjacentCells(adjacentCell);

@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import MinesweeperCell?>
 <AnchorPane
         prefHeight="476.0"
         prefWidth="600.0"
@@ -20,6 +21,7 @@
                 layoutY="38.0"
                 prefHeight="400.0"
                 prefWidth="492.0">
+
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

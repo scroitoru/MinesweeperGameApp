@@ -1,4 +1,5 @@
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -18,17 +19,20 @@ public class MinesweeperController {
             }
         }
         placeMines();
-
-
     }
 
     public void initialize (){
-        // add buttons to gridpane
-        // gridPane.add
         //loop through the 2d array of buttons, and place them on the board
+        for (int x = 0; x < boardSize; x++){
+            for (int y = 0; y < boardSize; y++){
+                board[x][y] = new MinesweeperCell(x, y);
+                board[x][y].setPrefSize(27, 22);
+                gridPane.add(board[x][y],x, y);
+            }
+        }
     }
 
-    //add method; on right click, place flag, make cell unclickable
+    //add method; on right click, place flag, make cell un-clickable
 
     //add method; on regular click, call playMove function
 

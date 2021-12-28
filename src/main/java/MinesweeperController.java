@@ -1,8 +1,13 @@
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class MinesweeperController {
@@ -11,6 +16,7 @@ public class MinesweeperController {
     GridPane gridPane;
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
+    private final ImageView flag = new ImageView(Objects.requireNonNull(getClass().getResource("flag.png")).toExternalForm());
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -28,6 +34,15 @@ public class MinesweeperController {
                 board[x][y] = new MinesweeperCell(x, y);
                 board[x][y].setPrefSize(27, 22);
                 gridPane.add(board[x][y],x, y);
+                board[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+                            //set flag image on button
+                            board[x][y].setGraphic(flag);
+                        }
+                    }
+                });
             }
         }
     }

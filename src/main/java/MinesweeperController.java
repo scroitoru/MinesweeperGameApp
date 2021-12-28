@@ -34,22 +34,27 @@ public class MinesweeperController {
                 board[x][y] = new MinesweeperCell(x, y);
                 board[x][y].setPrefSize(27, 22);
                 gridPane.add(board[x][y],x, y);
-                board[x][y].setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
-                            //set flag image on button
-                            board[x][y].setGraphic(flag);
-                        }
-                    }
-                });
+                //add on click to each button
+                onclick(board[x][y]);
             }
         }
     }
 
-    //add method; on right click, place flag, make cell un-clickable
-
-    //add method; on regular click, call playMove function
+    private void onclick(MinesweeperCell minesweeperCell) {
+        minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                MinesweeperCell btn = (MinesweeperCell) mouseEvent.getSource();
+                //right click - set flag image to button, disable click
+                if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+                    btn.setGraphic(flag);
+                    btn.setDisable(true);
+                }else{ //left click call playMove();
+                    playMove(btn);
+                }
+            }
+        });
+    }
 
     private void placeMines() {
         int nrMines = 50;
@@ -130,7 +135,9 @@ public class MinesweeperController {
             //game over
         } else {
             //reveal cell
-            clickedCell.wasClicked = true; // make unclickable
+            clickedCell.wasClicked = true;
+            // make unclickable
+            clickedCell.setDisable(true);
             checkAdjacentCells(clickedCell);
         }
     }
@@ -140,12 +147,16 @@ public class MinesweeperController {
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (cell.value == 0){
                 //uncover cell
-                cell.wasClicked = true; //make unclickable
+                cell.wasClicked = true;
+                //make unclickable
+                cell.setDisable(true);
                 checkAdjacentCells(adjacentCell);
             }
             if (cell.value > 0) {
                 //uncover cell
-                cell.wasClicked = true; //make unclickable
+                cell.wasClicked = true;
+                //make unclickable
+                cell.setDisable(true);
             }
         }
     }

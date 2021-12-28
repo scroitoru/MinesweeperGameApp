@@ -1,6 +1,6 @@
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +29,8 @@ public class MinesweeperController {
     }
 
     //add method; on right click, place flag, make cell unclickable
+    public void onMouseClicked(MouseEvent mouseEvent){
+    }
 
     //add method; on regular click, call playMove function
 

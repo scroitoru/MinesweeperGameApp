@@ -1,6 +1,8 @@
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.awt.event.MouseEvent;
+
 
 public class MinesweeperCell extends Button {
     public final int x;

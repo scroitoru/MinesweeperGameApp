@@ -17,6 +17,7 @@ public class MinesweeperController {
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
     private final ImageView flag = new ImageView(Objects.requireNonNull(getClass().getResource("flag.png")).toExternalForm());
+    private final ImageView bomb = new ImageView(Objects.requireNonNull(getClass().getResource("bomb.png")).toExternalForm());
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -123,14 +124,13 @@ public class MinesweeperController {
     public boolean isOnGrid (int x, int y){
         int minVal = 0;
         int maxVal = boardSize - 1;
-        if ( x < minVal || x > maxVal || y < minVal ||  y > maxVal){
-            return false;
-        }
-        return true;
+        return x >= minVal && x <= maxVal && y >= minVal && y <= maxVal;
     }
     public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
-        if (cellValue == -1) { // mine
+        if (cellValue == -1) {
+            // mine
+            clickedCell.setGraphic(bomb);
             //reveal all cells
             //game over
         } else {

@@ -39,7 +39,7 @@ public class MinesweeperController {
     }
 
     public void initialize (){
-        //loop through the 2d array of buttons, and place them on the board
+        //loop through the 2d array of buttons and place them on the board
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
                 board[x][y].setPrefSize(27, 22);
@@ -59,17 +59,15 @@ public class MinesweeperController {
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
                     if (clickedCell.wasClicked){ // if flag already placed, remove flag
                         clickedCell.wasClicked = false;
-                        //remove flag image, back to covered cell
                         clickedCell.setGraphic(null);
                     }
                     else {
-                        clickedCell.setGraphic(flag);
                         clickedCell.wasClicked = true;
-                        // shouldn't disable, user has to be able to take off the flag
+                        clickedCell.setGraphic(flag);
                     }
 
                 }
-                else{ //regular click
+                else{   //regular click
                     playMove(clickedCell);
                 }
             }
@@ -89,7 +87,7 @@ public class MinesweeperController {
                 //increment adjacent cells
                 ArrayList<MinesweeperCell> adjacentCells  = getAdjacentCells(randomCell);
                 for (MinesweeperCell adjacentCell : adjacentCells){
-                    //if adjacent is a mine, then don't increment
+                    //if adjacent is a mine, don't increment
                     if (adjacentCell.value != MinesweeperCell.MINE){
                         adjacentCell.value++;
                     }
@@ -149,14 +147,10 @@ public class MinesweeperController {
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
             clickedCell.setGraphic(mine);
-            //function to reveal all cells
             revealAll();
-            //game over
             gameOver();
         } else {
-            //TO DO: reveal cell
-            clickedCell.wasClicked = true;
-            clickedCell.setDisable(true);
+            revealCell(clickedCell);
             checkAdjacentCells(clickedCell);
         }
     }
@@ -176,40 +170,7 @@ public class MinesweeperController {
     private void revealAll() {
         for (MinesweeperCell[]row: board) {
             for (MinesweeperCell cell: row) {
-                switch (cell.value){
-                    case MinesweeperCell.MINE:
-                        cell.setGraphic(mine);
-                        break;
-                    case 0:
-                        cell.setGraphic(blank);
-                        break;
-                    case 1:
-                        cell.setGraphic(one);
-                        break;
-                    case 2:
-                        cell.setGraphic(two);
-                        break;
-                    case 3:
-                        cell.setGraphic(three);
-                        break;
-                    case 4:
-                        cell.setGraphic(four);
-                        break;
-                    case 5:
-                        cell.setGraphic(five);
-                        break;
-                    case 6:
-                        cell.setGraphic(six);
-                        break;
-                    case 7:
-                        cell.setGraphic(seven);
-                        break;
-                    case 8:
-                        cell.setGraphic(eight);
-                        break;
-                    default:
-                        cell.setGraphic(null);
-                }
+                revealCell(cell);
             }
         }
 
@@ -218,24 +179,27 @@ public class MinesweeperController {
     public void checkAdjacentCells( MinesweeperCell cell){
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
-            if (cell.value == 0){
-                //uncover cell
-                cell.setGraphic(blank);
-                cell.wasClicked = true;
-                cell.setDisable(true);
+            if (adjacentCell.value == 0){
+                revealCell(adjacentCell);
+                adjacentCell.setGraphic(blank); //should the reveal function itself set the graphic?
                 checkAdjacentCells(adjacentCell);
             }
-            if (cell.value > 0) {
-                //uncover cell
-                revealCell(cell);
-                cell.wasClicked = true;
-                cell.setDisable(true);
+            if (adjacentCell.value > 0) {
+                revealCell(adjacentCell);
             }
         }
     }
 
     private void revealCell(MinesweeperCell cell) {
-        switch (cell.value){
+        cell.wasClicked = true;
+        cell.setDisable(true);
+        switch (cell.value) {
+            case MinesweeperCell.MINE:
+                cell.setGraphic(mine);
+                break;
+            case 0:
+                cell.setGraphic(blank);
+                break;
             case 1:
                 cell.setGraphic(one);
                 break;

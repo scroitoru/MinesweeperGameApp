@@ -102,7 +102,7 @@ public class MinesweeperController {
         int x = cell.x;
         int y = cell.y;
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
-
+//fix labels, y axis in descending order
         // top left
         if (isOnGrid(x-1,y+1)){
             adjacentCells.add(board[x - 1][y + 1]);
@@ -143,10 +143,10 @@ public class MinesweeperController {
         int maxVal = boardSize - 1;
         return x >= minVal && x <= maxVal && y >= minVal && y <= maxVal;
     }
+
     public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
-            clickedCell.setGraphic(mine);
             revealAll();
             gameOver();
         } else {
@@ -181,7 +181,6 @@ public class MinesweeperController {
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (adjacentCell.value == 0){
                 revealCell(adjacentCell);
-                adjacentCell.setGraphic(blank); //should the reveal function itself set the graphic?
                 checkAdjacentCells(adjacentCell);
             }
             if (adjacentCell.value > 0) {

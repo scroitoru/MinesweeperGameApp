@@ -219,16 +219,49 @@ public class MinesweeperController {
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (cell.value == 0){
-                //TO DO: uncover cell
+                //uncover cell
+                cell.setGraphic(blank);
                 cell.wasClicked = true;
                 cell.setDisable(true);
                 checkAdjacentCells(adjacentCell);
             }
             if (cell.value > 0) {
-                //TO DO: uncover cell
+                //uncover cell
+                revealCell(cell);
                 cell.wasClicked = true;
                 cell.setDisable(true);
             }
+        }
+    }
+
+    private void revealCell(MinesweeperCell cell) {
+        switch (cell.value){
+            case 1:
+                cell.setGraphic(one);
+                break;
+            case 2:
+                cell.setGraphic(two);
+                break;
+            case 3:
+                cell.setGraphic(three);
+                break;
+            case 4:
+                cell.setGraphic(four);
+                break;
+            case 5:
+                cell.setGraphic(five);
+                break;
+            case 6:
+                cell.setGraphic(six);
+                break;
+            case 7:
+                cell.setGraphic(seven);
+                break;
+            case 8:
+                cell.setGraphic(eight);
+                break;
+            default:
+                cell.setGraphic(null);
         }
     }
 }

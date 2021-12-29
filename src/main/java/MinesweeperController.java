@@ -55,7 +55,7 @@ public class MinesweeperController {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
-                //right click - set flag image to button, disable click
+                //right click - set flag image to button
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
                     if (clickedCell.wasClicked){ // if flag already placed, remove flag
                         clickedCell.wasClicked = false;

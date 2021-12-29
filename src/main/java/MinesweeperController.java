@@ -1,6 +1,5 @@
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -32,7 +31,6 @@ public class MinesweeperController {
         //loop through the 2d array of buttons, and place them on the board
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
-                board[x][y] = new MinesweeperCell(x, y);
                 board[x][y].setPrefSize(27, 22);
                 gridPane.add(board[x][y],x, y);
                 //add on click to each button
@@ -45,13 +43,22 @@ public class MinesweeperController {
         minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                MinesweeperCell btn = (MinesweeperCell) mouseEvent.getSource();
+                MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
                 //right click - set flag image to button, disable click
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
-                    btn.setGraphic(flag);
-                    btn.setDisable(true);
-                }else{ //left click call playMove();
-                    playMove(btn);
+                    if (clickedCell.wasClicked){ // if flag already placed, remove flag
+                        clickedCell.wasClicked = false;
+                        //TO DO: remove flag image, back to covered cell
+                    }
+                    else {
+                        clickedCell.setGraphic(flag);
+                        clickedCell.wasClicked = true;
+                        // shouldn't disable, user has to be able to take off the flag
+                    }
+
+                }
+                else{ //regular click
+                    playMove(clickedCell);
                 }
             }
         });
@@ -65,7 +72,7 @@ public class MinesweeperController {
             x = randomInt.nextInt(boardSize);
             y = randomInt.nextInt(boardSize);
             MinesweeperCell randomCell = board[x][y];
-            if(randomCell.value != MinesweeperCell.MINE) {
+            if (randomCell.value != MinesweeperCell.MINE) {
                 randomCell.value = MinesweeperCell.MINE;
                 //increment adjacent cells
                 ArrayList<MinesweeperCell> adjacentCells  = getAdjacentCells(randomCell);
@@ -128,15 +135,13 @@ public class MinesweeperController {
     }
     public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
-        if (cellValue == -1) {
-            // mine
+        if (cellValue == MinesweeperCell.MINE) {
             clickedCell.setGraphic(bomb);
-            //reveal all cells
-            //game over
+            // TO DO: function to reveal all cells
+            //TO DO: game over
         } else {
-            //reveal cell
+            //TO DO: reveal cell
             clickedCell.wasClicked = true;
-            // make unclickable
             clickedCell.setDisable(true);
             checkAdjacentCells(clickedCell);
         }
@@ -146,16 +151,14 @@ public class MinesweeperController {
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (cell.value == 0){
-                //uncover cell
+                //TO DO: uncover cell
                 cell.wasClicked = true;
-                //make unclickable
                 cell.setDisable(true);
                 checkAdjacentCells(adjacentCell);
             }
             if (cell.value > 0) {
-                //uncover cell
+                //TO DO: uncover cell
                 cell.wasClicked = true;
-                //make unclickable
                 cell.setDisable(true);
             }
         }

@@ -50,30 +50,6 @@ public class MinesweeperController {
         }
     }
 
-    private void onclick(MinesweeperCell minesweeperCell) {
-        minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
-                //right click - set flag image to button
-                if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
-                    if (clickedCell.wasClicked){ // if flag already placed, remove flag
-                        clickedCell.wasClicked = false;
-                        clickedCell.setGraphic(null);
-                    }
-                    else {
-                        clickedCell.wasClicked = true;
-                        clickedCell.setGraphic(flag);
-                    }
-
-                }
-                else{   //regular click
-                    playMove(clickedCell);
-                }
-            }
-        });
-    }
-
     private void placeMines() {
         int nrMines = 50;
         Random randomInt = new Random();
@@ -98,7 +74,49 @@ public class MinesweeperController {
         }
     }
 
-    public ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
+    private void onclick(MinesweeperCell minesweeperCell) {
+        minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
+                //right click - set flag image to button
+                if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+                    flagCell(clickedCell);
+                }
+                else {   //regular click
+                    playMove(clickedCell);
+                }
+            }
+        });
+    }
+
+    private void flagCell(MinesweeperCell clickedCell) {
+        if (!clickedCell.wasClicked){
+            clickedCell.wasClicked = true;
+            clickedCell.setGraphic(flag);
+        }
+        else {
+            clickedCell.wasClicked = false; //un-click cell
+            clickedCell.setGraphic(null); //remove flag
+        }
+    }
+
+    private void playMove(MinesweeperCell clickedCell) {
+        int cellValue = clickedCell.value;
+        if (cellValue == MinesweeperCell.MINE) {
+            revealAll();
+            gameOver();
+        } else {
+            revealCell(clickedCell);
+            checkAdjacentCells(clickedCell);
+        }
+    }
+
+    private boolean isOnGrid (int x, int y){
+        return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
+    }
+
+    private ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
         int x = cell.x;
         int y = cell.y;
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
@@ -138,45 +156,7 @@ public class MinesweeperController {
         return adjacentCells;
     }
 
-    public boolean isOnGrid (int x, int y){
-        int minVal = 0;
-        int maxVal = boardSize - 1;
-        return x >= minVal && x <= maxVal && y >= minVal && y <= maxVal;
-    }
-
-    public void playMove(MinesweeperCell clickedCell) {
-        int cellValue = clickedCell.value;
-        if (cellValue == MinesweeperCell.MINE) {
-            revealAll();
-            gameOver();
-        } else {
-            revealCell(clickedCell);
-            checkAdjacentCells(clickedCell);
-        }
-    }
-
-    private void gameOver() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game Over");
-        alert.setHeaderText("GAME OVER!");
-        alert.setContentText("GAME OVER");
-        alert.showAndWait().ifPresent(rs -> {
-            if (rs == ButtonType.OK) {
-                System.exit(1);
-            }
-        });
-    }
-
-    private void revealAll() {
-        for (MinesweeperCell[]row: board) {
-            for (MinesweeperCell cell: row) {
-                revealCell(cell);
-            }
-        }
-
-    }
-
-    public void checkAdjacentCells( MinesweeperCell cell){
+    private void checkAdjacentCells( MinesweeperCell cell){
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (adjacentCell.value == 0){
@@ -226,5 +206,26 @@ public class MinesweeperController {
             default:
                 cell.setGraphic(null);
         }
+    }
+
+    private void revealAll() {
+        for (MinesweeperCell[]row: board) {
+            for (MinesweeperCell cell: row) {
+                revealCell(cell);
+            }
+        }
+
+    }
+
+    private void gameOver() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText("GAME OVER!");
+        alert.setContentText("GAME OVER");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.exit(1);
+            }
+        });
     }
 }

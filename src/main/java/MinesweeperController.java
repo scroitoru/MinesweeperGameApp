@@ -1,5 +1,7 @@
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +17,17 @@ public class MinesweeperController {
     GridPane gridPane;
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    private final ImageView flag = new ImageView(Objects.requireNonNull(getClass().getResource("flag.png")).toExternalForm());
-    private final ImageView bomb = new ImageView(Objects.requireNonNull(getClass().getResource("bomb.png")).toExternalForm());
+    private final ImageView flag = new ImageView(Objects.requireNonNull(getClass().getResource("flag.svg.png")).toExternalForm());
+    private final ImageView mine = new ImageView(Objects.requireNonNull(getClass().getResource("mine.png")).toExternalForm());
+    private final ImageView blank = new ImageView(Objects.requireNonNull(getClass().getResource("blank.svg.png")).toExternalForm());
+    private final ImageView one = new ImageView(Objects.requireNonNull(getClass().getResource("1.svg.png")).toExternalForm());
+    private final ImageView two = new ImageView(Objects.requireNonNull(getClass().getResource("2.svg.png")).toExternalForm());
+    private final ImageView three = new ImageView(Objects.requireNonNull(getClass().getResource("3.svg.png")).toExternalForm());
+    private final ImageView four = new ImageView(Objects.requireNonNull(getClass().getResource("4.svg.png")).toExternalForm());
+    private final ImageView five = new ImageView(Objects.requireNonNull(getClass().getResource("5.svg.png")).toExternalForm());
+    private final ImageView six = new ImageView(Objects.requireNonNull(getClass().getResource("6.svg.png")).toExternalForm());
+    private final ImageView seven = new ImageView(Objects.requireNonNull(getClass().getResource("7.svg.png")).toExternalForm());
+    private final ImageView eight = new ImageView(Objects.requireNonNull(getClass().getResource("8.svg.png")).toExternalForm());
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -48,7 +59,8 @@ public class MinesweeperController {
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
                     if (clickedCell.wasClicked){ // if flag already placed, remove flag
                         clickedCell.wasClicked = false;
-                        //TO DO: remove flag image, back to covered cell
+                        //remove flag image, back to covered cell
+                        clickedCell.setGraphic(null);
                     }
                     else {
                         clickedCell.setGraphic(flag);
@@ -136,15 +148,69 @@ public class MinesweeperController {
     public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
-            clickedCell.setGraphic(bomb);
-            // TO DO: function to reveal all cells
-            //TO DO: game over
+            clickedCell.setGraphic(mine);
+            //function to reveal all cells
+            revealAll();
+            //game over
+            gameOver();
         } else {
             //TO DO: reveal cell
             clickedCell.wasClicked = true;
             clickedCell.setDisable(true);
             checkAdjacentCells(clickedCell);
         }
+    }
+
+    private void gameOver() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Game Over");
+        alert.setHeaderText("GAME OVER!");
+        alert.setContentText("GAME OVER");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.exit(1);
+            }
+        });
+    }
+
+    private void revealAll() {
+        for (MinesweeperCell[]row: board) {
+            for (MinesweeperCell cell: row) {
+                switch (cell.value){
+                    case MinesweeperCell.MINE:
+                        cell.setGraphic(mine);
+                        break;
+                    case 0:
+                        cell.setGraphic(blank);
+                        break;
+                    case 1:
+                        cell.setGraphic(one);
+                        break;
+                    case 2:
+                        cell.setGraphic(two);
+                        break;
+                    case 3:
+                        cell.setGraphic(three);
+                        break;
+                    case 4:
+                        cell.setGraphic(four);
+                        break;
+                    case 5:
+                        cell.setGraphic(five);
+                        break;
+                    case 6:
+                        cell.setGraphic(six);
+                        break;
+                    case 7:
+                        cell.setGraphic(seven);
+                        break;
+                    case 8:
+                        cell.setGraphic(eight);
+                        break;
+                }
+            }
+        }
+
     }
 
     public void checkAdjacentCells( MinesweeperCell cell){
@@ -164,4 +230,3 @@ public class MinesweeperController {
         }
     }
 }
-

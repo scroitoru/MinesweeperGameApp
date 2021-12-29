@@ -45,7 +45,7 @@ public class MinesweeperController {
                 board[x][y].setPrefSize(27, 22);
                 gridPane.add(board[x][y],x, y);
                 //add on click to each button
-                onclick(board[x][y]);
+                addOnclick(board[x][y]);
             }
         }
     }
@@ -74,7 +74,7 @@ public class MinesweeperController {
         }
     }
 
-    private void onclick(MinesweeperCell minesweeperCell) {
+    private void addOnclick(MinesweeperCell minesweeperCell) {
         minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -120,7 +120,7 @@ public class MinesweeperController {
         int x = cell.x;
         int y = cell.y;
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
-//fix labels, y axis in descending order
+        //fix labels, y - axis in descending order
         // top left
         if (isOnGrid(x-1,y+1)){
             adjacentCells.add(board[x - 1][y + 1]);

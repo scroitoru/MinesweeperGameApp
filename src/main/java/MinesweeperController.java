@@ -207,6 +207,8 @@ public class MinesweeperController {
                     case 8:
                         cell.setGraphic(eight);
                         break;
+                    default:
+                        cell.setGraphic(null);
                 }
             }
         }

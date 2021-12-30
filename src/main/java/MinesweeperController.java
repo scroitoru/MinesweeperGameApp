@@ -116,20 +116,20 @@ public class MinesweeperController {
         return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
     }
 
-    private ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
+    //changed to public for now to test
+    public ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
         int x = cell.x;
         int y = cell.y;
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
-        //fix labels, y - axis in descending order
-        // top left
+        // bottom left
         if (isOnGrid(x-1,y+1)){
             adjacentCells.add(board[x - 1][y + 1]);
         }
-        //top middle
+        //bottom middle
         if (isOnGrid(x,y+1)){
             adjacentCells.add(board[x][y + 1]);
         }
-        //top right
+        //bottom right
         if (isOnGrid(x+1,y+1)){
             adjacentCells.add(board[x + 1][y + 1]);
         }
@@ -141,15 +141,15 @@ public class MinesweeperController {
         if(isOnGrid(x+1,y)){
             adjacentCells.add(board[x+1][y]);
         }
-        //bottom left
-        if(isOnGrid(x+1,y)){
-            adjacentCells.add(board[x-1][y]);
+        //top left
+        if(isOnGrid(x+1,y -1)){
+            adjacentCells.add(board[x-1][y-1]);
         }
-        //bottom middle
+        //top middle
         if(isOnGrid(x,y-1)){
             adjacentCells.add(board[x][y-1]);
         }
-        //bottom right
+        //top right
         if(isOnGrid(x + 1,y-1)){
             adjacentCells.add(board[x][y-1]);
         }

@@ -1,7 +1,8 @@
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.doReturn;
+//import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
 import static org.mockito.Mockito.mock;
 
 public class MinesweeperControllerTest {
@@ -23,6 +24,29 @@ public class MinesweeperControllerTest {
         //then
         //verify cells placed on gridPane
         //verify addOnClick method called, and works
+
+    }
+
+    @Test
+    public void getAdjacentCells(){
+        //given
+        givenMinesweeperController();
+        ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
+        MinesweeperCell sampleCell = new MinesweeperCell(1,0);
+        expectedAdjacentCells.add(new MinesweeperCell(0,1)); //bottom left
+        expectedAdjacentCells.add(new MinesweeperCell(1,1)); //bottom middle;
+        expectedAdjacentCells.add(new MinesweeperCell(2,1)); //bottom right
+        expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
+        expectedAdjacentCells.add(new MinesweeperCell(2,0)); //right
+        // top left off grid
+        //top right off grid
+
+        //when
+        ArrayList<MinesweeperCell> adjacentCells = controller.getAdjacentCells(sampleCell);
+
+        //then
+        //bottom left
+        assertEquals(adjacentCells, expectedAdjacentCells);
 
     }
 

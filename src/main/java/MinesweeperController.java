@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.Random;
 
 public class MinesweeperController {
-
     @FXML
     GridPane gridPane;
     private final int boardSize = 20;
@@ -28,6 +27,7 @@ public class MinesweeperController {
     private final ImageView six = new ImageView(Objects.requireNonNull(getClass().getResource("6.svg.png")).toExternalForm());
     private final ImageView seven = new ImageView(Objects.requireNonNull(getClass().getResource("7.svg.png")).toExternalForm());
     private final ImageView eight = new ImageView(Objects.requireNonNull(getClass().getResource("8.svg.png")).toExternalForm());
+
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -45,7 +45,7 @@ public class MinesweeperController {
                 board[x][y].setPrefSize(27, 22);
                 gridPane.add(board[x][y],x, y);
                 //add on click to each button
-                addOnclick(board[x][y]);
+                addOnClick(board[x][y]);
             }
         }
     }
@@ -74,7 +74,7 @@ public class MinesweeperController {
         }
     }
 
-    private void addOnclick(MinesweeperCell minesweeperCell) {
+    private void addOnClick(MinesweeperCell minesweeperCell) {
         minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

@@ -1,4 +1,7 @@
+import javafx.application.Application;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 //import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -11,6 +14,20 @@ public class MinesweeperControllerTest {
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
     private GridPane gridPane;
 
+    @BeforeClass
+    public static void beforeClass() {
+        new Thread() {
+            @Override
+            public void run() {
+                Application.launch(FXRunnerApplication.class);
+            }
+        }.start();
+    }
+    public static class FXRunnerApplication extends Application {
+        @Override
+        public void start(Stage paramStage) throws Exception {
+        }
+    }
 
     // how to test constructor? especially since constructor calls placeMines() method
     @Test
@@ -38,7 +55,7 @@ public class MinesweeperControllerTest {
         expectedAdjacentCells.add(new MinesweeperCell(2,1)); //bottom right
         expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
         expectedAdjacentCells.add(new MinesweeperCell(2,0)); //right
-        // top left off grid
+        //top left off grid
         //top right off grid
 
         //when

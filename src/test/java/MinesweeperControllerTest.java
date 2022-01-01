@@ -3,11 +3,14 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
 //import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import static org.mockito.Mockito.mock;
 
+@ExtendWith(ApplicationExtension.class)
 public class MinesweeperControllerTest {
     private MinesweeperController controller;
     private final int boardSize = 20;

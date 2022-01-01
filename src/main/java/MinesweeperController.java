@@ -143,7 +143,7 @@ public class MinesweeperController {
         }
         //top left
         if(isOnGrid(x+1,y -1)){
-            adjacentCells.add(board[x-1][y-1]);
+            adjacentCells.add(board[x+1][y-1]);
         }
         //top middle
         if(isOnGrid(x,y-1)){

@@ -2,9 +2,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -17,17 +19,28 @@ public class MinesweeperController {
     GridPane gridPane;
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    private final ImageView flag = new ImageView(Objects.requireNonNull(getClass().getResource("flag.svg.png")).toExternalForm());
-    private final ImageView mine = new ImageView(Objects.requireNonNull(getClass().getResource("mine.png")).toExternalForm());
-    private final ImageView blank = new ImageView(Objects.requireNonNull(getClass().getResource("blank.svg.png")).toExternalForm());
-    private final ImageView one = new ImageView(Objects.requireNonNull(getClass().getResource("1.svg.png")).toExternalForm());
-    private final ImageView two = new ImageView(Objects.requireNonNull(getClass().getResource("2.svg.png")).toExternalForm());
-    private final ImageView three = new ImageView(Objects.requireNonNull(getClass().getResource("3.svg.png")).toExternalForm());
-    private final ImageView four = new ImageView(Objects.requireNonNull(getClass().getResource("4.svg.png")).toExternalForm());
-    private final ImageView five = new ImageView(Objects.requireNonNull(getClass().getResource("5.svg.png")).toExternalForm());
-    private final ImageView six = new ImageView(Objects.requireNonNull(getClass().getResource("6.svg.png")).toExternalForm());
-    private final ImageView seven = new ImageView(Objects.requireNonNull(getClass().getResource("7.svg.png")).toExternalForm());
-    private final ImageView eight = new ImageView(Objects.requireNonNull(getClass().getResource("8.svg.png")).toExternalForm());
+    Image flagImage = new Image("flag.svg.png");
+    private final ImageView flag = new ImageView(flagImage);
+    Image mineImage = new Image("mine.png");
+    private  final ImageView mine = new ImageView(mineImage);
+    Image blankImage = new Image("blank.svg.png");
+    private final ImageView blank = new ImageView(blankImage);
+    Image oneImage = new Image("1.svg.png");
+    private final ImageView one = new ImageView(oneImage);
+    Image twoImage = new Image("2.svg.png");
+    private final ImageView two = new ImageView(twoImage);
+    Image threeImage = new Image("3.svg.png");
+    private final ImageView three = new ImageView(threeImage);
+    Image fourImage = new Image("4.svg.png");
+    private final ImageView four = new ImageView(fourImage);
+    Image fiveImage = new Image("5.svg.png");
+    private final ImageView five = new ImageView(fiveImage);
+    Image sixImage = new Image("6.svg.png");
+    private final ImageView six = new ImageView(sixImage);
+    Image sevenImage = new Image("7.svg.png");
+    private final ImageView seven = new ImageView(sevenImage);
+    Image eightImage = new Image("8.svg.png");
+    private final ImageView eight = new ImageView(eightImage);
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -42,10 +55,13 @@ public class MinesweeperController {
         //loop through the 2d array of buttons and place them on the board
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
-                board[x][y].setPrefSize(27, 22);
+                board[x][y].setMinSize(24, 20);
+                board[x][y].setMaxSize(24,20);
                 gridPane.add(board[x][y],x, y);
                 //add on click to each button
                 addOnclick(board[x][y]);
+                //set button image sizes
+
             }
         }
     }
@@ -93,6 +109,7 @@ public class MinesweeperController {
     private void flagCell(MinesweeperCell clickedCell) {
         if (!clickedCell.wasClicked){
             clickedCell.wasClicked = true;
+            setImageSize(flag);
             clickedCell.setGraphic(flag);
         }
         else {
@@ -142,8 +159,8 @@ public class MinesweeperController {
             adjacentCells.add(board[x+1][y]);
         }
         //bottom left
-        if(isOnGrid(x+1,y)){
-            adjacentCells.add(board[x-1][y]);
+        if(isOnGrid(x+1,y-1)){
+            adjacentCells.add(board[x+1][y-1]);
         }
         //bottom middle
         if(isOnGrid(x,y-1)){
@@ -174,33 +191,43 @@ public class MinesweeperController {
         cell.setDisable(true);
         switch (cell.value) {
             case MinesweeperCell.MINE:
+                setImageSize(mine);
                 cell.setGraphic(mine);
                 break;
             case 0:
+                setImageSize(blank);
                 cell.setGraphic(blank);
                 break;
             case 1:
+                setImageSize(one);
                 cell.setGraphic(one);
                 break;
             case 2:
+                setImageSize(two);
                 cell.setGraphic(two);
                 break;
             case 3:
+                setImageSize(three);
                 cell.setGraphic(three);
                 break;
             case 4:
+                setImageSize(four);
                 cell.setGraphic(four);
                 break;
             case 5:
+                setImageSize(five);
                 cell.setGraphic(five);
                 break;
             case 6:
+                setImageSize(six);
                 cell.setGraphic(six);
                 break;
             case 7:
+                setImageSize(seven);
                 cell.setGraphic(seven);
                 break;
             case 8:
+                setImageSize(eight);
                 cell.setGraphic(eight);
                 break;
             default:
@@ -227,5 +254,10 @@ public class MinesweeperController {
                 System.exit(1);
             }
         });
+    }
+
+    private void setImageSize(ImageView image){
+        image.setFitHeight(20);
+        image.setPreserveRatio(true);
     }
 }

@@ -3,8 +3,22 @@ Button{
     -fx-min-height:22;
     -fx-border: none;
     -fx-content-display: center;
+    -fx-background-color: black;
 }
 
 .button{
     -fx-content-display: center;
+    -fx-background-color: darkgray;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 3 3 0;
+
+}
+
+.button:hover {
+    -fx-background-color:blue;
+    -fx-background-radius:0;
+    -fx-border-color:black;
+    -fx-border-width: 0 3 3 0;
+    -fx-background-insets: 0;
 }

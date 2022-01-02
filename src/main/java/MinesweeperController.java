@@ -19,17 +19,18 @@ public class MinesweeperController {
     GridPane gridPane;
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    private final ImageView flag = new ImageView("flag.svg.png");
-    private  final ImageView mine = new ImageView("mine.png");
-    private final ImageView blank = new ImageView("blank.svg.png");
-    private final ImageView one = new ImageView("1.svg.png");
-    private final ImageView two = new ImageView("2.svg.png");
-    private final ImageView three = new ImageView("3.svg.png");
-    private final ImageView four = new ImageView("4.svg.png");
-    private final ImageView five = new ImageView("5.svg.png");
-    private final ImageView six = new ImageView("6.svg.png");
-    private final ImageView seven = new ImageView("7.svg.png");
-    private final ImageView eight = new ImageView("8.svg.png");
+    private final Image flagImage = new Image("flag.svg.png");
+    private final Image mineImage = new Image("mine.png");
+    private final Image blankImage = new Image("blank.svg.png");
+    private final Image oneImage = new Image("1.svg.png");
+    private final Image twoImage = new Image("2.svg.png");
+    private final Image threeImage = new Image("3.svg.png");
+    private final Image fourImage = new Image("4.svg.png");
+    private final Image fiveImage = new Image("5.svg.png");
+    private final Image sixImage = new Image("6.svg.png");
+    private final Image sevenImage = new Image("7.svg.png");
+    private final Image eightImage = new Image("8.svg.png");
+
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -98,6 +99,7 @@ public class MinesweeperController {
     private void flagCell(MinesweeperCell clickedCell) {
         if (!clickedCell.wasClicked){
             clickedCell.wasClicked = true;
+            ImageView flag = new ImageView(flagImage);
             setImageSize(flag);
             clickedCell.setGraphic(flag);
         }
@@ -162,7 +164,7 @@ public class MinesweeperController {
         return adjacentCells;
     }
 
-    private void checkAdjacentCells( MinesweeperCell cell){
+    private void checkAdjacentCells(MinesweeperCell cell){
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             if (adjacentCell.value == 0){
@@ -180,42 +182,52 @@ public class MinesweeperController {
         cell.setDisable(true);
         switch (cell.value) {
             case MinesweeperCell.MINE:
+                ImageView mine = new ImageView(mineImage);
                 setImageSize(mine);
                 cell.setGraphic(mine);
                 break;
             case 0:
+                ImageView blank = new ImageView(blankImage);
                 setImageSize(blank);
                 cell.setGraphic(blank);
                 break;
             case 1:
+                ImageView one = new ImageView(oneImage);
                 setImageSize(one);
                 cell.setGraphic(one);
                 break;
             case 2:
+                ImageView two = new ImageView(twoImage);
                 setImageSize(two);
                 cell.setGraphic(two);
                 break;
             case 3:
+                ImageView three = new ImageView(threeImage);
                 setImageSize(three);
                 cell.setGraphic(three);
                 break;
             case 4:
+                ImageView four = new ImageView(fourImage);
                 setImageSize(four);
                 cell.setGraphic(four);
                 break;
             case 5:
+                ImageView five = new ImageView(fiveImage);
                 setImageSize(five);
                 cell.setGraphic(five);
                 break;
             case 6:
+                ImageView six = new ImageView(sixImage);
                 setImageSize(six);
                 cell.setGraphic(six);
                 break;
             case 7:
+                ImageView seven = new ImageView(sevenImage);
                 setImageSize(seven);
                 cell.setGraphic(seven);
                 break;
             case 8:
+                ImageView eight = new ImageView(eightImage);
                 setImageSize(eight);
                 cell.setGraphic(eight);
                 break;

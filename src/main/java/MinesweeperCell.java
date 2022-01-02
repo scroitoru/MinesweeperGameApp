@@ -23,7 +23,9 @@ public class MinesweeperCell extends Button {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MinesweeperCell that = (MinesweeperCell) o;
-        return x == that.x && y == that.y && wasClicked == that.wasClicked && value == that.value;
+        //return x == that.x && y == that.y && wasClicked == that.wasClicked && value == that.value;
+        return x == that.x && y == that.y;
+        // for now, this is all that matters. potentially not enough for other tests?
     }
 
     @Override

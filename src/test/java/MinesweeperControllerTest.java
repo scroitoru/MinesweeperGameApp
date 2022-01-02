@@ -32,7 +32,8 @@ public class MinesweeperControllerTest {
         //given
         givenMinesweeperController();
         ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
-        MinesweeperCell sampleCell = new MinesweeperCell(1,0);
+        //MinesweeperCell sampleCell = new MinesweeperCell(1,0);
+        MinesweeperCell sampleCell = board[1][0];
         //top left off grid
         expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
         expectedAdjacentCells.add(new MinesweeperCell(0,1)); //bottom left
@@ -46,7 +47,6 @@ public class MinesweeperControllerTest {
         ArrayList<MinesweeperCell> adjacentCells = controller.getAdjacentCells(sampleCell);
 
         //then
-        //is this using the MinesweeperCell equals method?
         assertEquals(adjacentCells,expectedAdjacentCells);
 
     }
@@ -56,7 +56,8 @@ public class MinesweeperControllerTest {
         // should this code go here?
         for (int x = 0; x < boardSize; x++){
             for(int y = 0; y < boardSize; y++){
-                board[x][y] = mock(MinesweeperCell.class);
+                //board[x][y] = mock(MinesweeperCell.class);
+                board[x][y] = new MinesweeperCell(x,y);
             }
         }
        //test placeMines method?

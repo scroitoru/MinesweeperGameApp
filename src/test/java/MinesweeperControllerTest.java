@@ -1,13 +1,9 @@
-import javafx.application.Application;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
-//import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(ApplicationExtension.class)
@@ -16,22 +12,6 @@ public class MinesweeperControllerTest {
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
     private GridPane gridPane;
-
-    @BeforeClass
-    public static void beforeClass() {
-        new Thread() {
-            @Override
-            public void run() {
-                Application.launch(FXRunnerApplication.class);
-            }
-        }.start();
-    }
-    public static class FXRunnerApplication extends Application {
-        @Override
-        public void start(Stage paramStage) throws Exception {
-        }
-    }
-
     // how to test constructor? especially since constructor calls placeMines() method
     @Test
     public void initialize(){
@@ -48,25 +28,26 @@ public class MinesweeperControllerTest {
     }
 
     @Test
-    public void getAdjacentCells(){
+    public void getAdjacentCells(){ //passes sometimes?
         //given
         givenMinesweeperController();
         ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
         MinesweeperCell sampleCell = new MinesweeperCell(1,0);
-        expectedAdjacentCells.add(new MinesweeperCell(0,1)); //bottom left
-        expectedAdjacentCells.add(new MinesweeperCell(1,1)); //bottom middle;
-        expectedAdjacentCells.add(new MinesweeperCell(2,1)); //bottom right
-        expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
-        expectedAdjacentCells.add(new MinesweeperCell(2,0)); //right
         //top left off grid
+        expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
+        expectedAdjacentCells.add(new MinesweeperCell(0,1)); //bottom left
         //top right off grid
+        expectedAdjacentCells.add(new MinesweeperCell(1,1)); //bottom middle;
+        expectedAdjacentCells.add(new MinesweeperCell(2,0)); //right
+        expectedAdjacentCells.add(new MinesweeperCell(2,1)); //bottom right
+
 
         //when
         ArrayList<MinesweeperCell> adjacentCells = controller.getAdjacentCells(sampleCell);
 
         //then
-        //bottom left
-        assertEquals(adjacentCells, expectedAdjacentCells);
+        //is this using the MinesweeperCell equals method?
+        assertEquals(adjacentCells,expectedAdjacentCells);
 
     }
 

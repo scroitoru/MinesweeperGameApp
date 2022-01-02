@@ -121,38 +121,17 @@ public class MinesweeperController {
         int x = cell.x;
         int y = cell.y;
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
-        // bottom left
-        if (isOnGrid(x-1,y+1)){
-            adjacentCells.add(board[x - 1][y + 1]);
+        for(int ix = x-1; ix <= x+1; ix++){
+            for(int iy = y-1; iy <= y+1; iy++){
+                if(ix == x && iy == y){
+                    //don't add cell with original x,y
+                }
+                else if(isOnGrid(ix,iy)){
+                    adjacentCells.add(board[ix][iy]);
+                }
+            }
         }
-        //bottom middle
-        if (isOnGrid(x,y+1)){
-            adjacentCells.add(board[x][y + 1]);
-        }
-        //bottom right
-        if (isOnGrid(x+1,y+1)){
-            adjacentCells.add(board[x + 1][y + 1]);
-        }
-        //left
-        if (isOnGrid(x-1,y)){
-            adjacentCells.add(board[x - 1][y]);
-        }
-        //right
-        if(isOnGrid(x+1,y)){
-            adjacentCells.add(board[x+1][y]);
-        }
-        //top left
-        if(isOnGrid(x+1,y -1)){
-            adjacentCells.add(board[x+1][y-1]);
-        }
-        //top middle
-        if(isOnGrid(x,y-1)){
-            adjacentCells.add(board[x][y-1]);
-        }
-        //top right
-        if(isOnGrid(x + 1,y-1)){
-            adjacentCells.add(board[x][y-1]);
-        }
+
         return adjacentCells;
     }
 

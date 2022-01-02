@@ -28,12 +28,13 @@ public class MinesweeperControllerTest {
     }
 
     @Test
-    public void getAdjacentCells(){ //passes sometimes?
+    public void getAdjacentCells(){
         //given
         givenMinesweeperController();
         ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
         //MinesweeperCell sampleCell = new MinesweeperCell(1,0);
         MinesweeperCell sampleCell = board[1][0];
+
         //top left off grid
         expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
         expectedAdjacentCells.add(new MinesweeperCell(0,1)); //bottom left

@@ -19,28 +19,17 @@ public class MinesweeperController {
     GridPane gridPane;
     private final int boardSize = 20;
     private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    Image flagImage = new Image("flag.svg.png");
-    private final ImageView flag = new ImageView(flagImage);
-    Image mineImage = new Image("mine.png");
-    private  final ImageView mine = new ImageView(mineImage);
-    Image blankImage = new Image("blank.svg.png");
-    private final ImageView blank = new ImageView(blankImage);
-    Image oneImage = new Image("1.svg.png");
-    private final ImageView one = new ImageView(oneImage);
-    Image twoImage = new Image("2.svg.png");
-    private final ImageView two = new ImageView(twoImage);
-    Image threeImage = new Image("3.svg.png");
-    private final ImageView three = new ImageView(threeImage);
-    Image fourImage = new Image("4.svg.png");
-    private final ImageView four = new ImageView(fourImage);
-    Image fiveImage = new Image("5.svg.png");
-    private final ImageView five = new ImageView(fiveImage);
-    Image sixImage = new Image("6.svg.png");
-    private final ImageView six = new ImageView(sixImage);
-    Image sevenImage = new Image("7.svg.png");
-    private final ImageView seven = new ImageView(sevenImage);
-    Image eightImage = new Image("8.svg.png");
-    private final ImageView eight = new ImageView(eightImage);
+    private final ImageView flag = new ImageView("flag.svg.png");
+    private  final ImageView mine = new ImageView("mine.png");
+    private final ImageView blank = new ImageView("blank.svg.png");
+    private final ImageView one = new ImageView("1.svg.png");
+    private final ImageView two = new ImageView("2.svg.png");
+    private final ImageView three = new ImageView("3.svg.png");
+    private final ImageView four = new ImageView("4.svg.png");
+    private final ImageView five = new ImageView("5.svg.png");
+    private final ImageView six = new ImageView("6.svg.png");
+    private final ImageView seven = new ImageView("7.svg.png");
+    private final ImageView eight = new ImageView("8.svg.png");
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){

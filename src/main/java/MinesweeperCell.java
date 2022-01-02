@@ -1,6 +1,8 @@
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.util.Objects;
+
 
 public class MinesweeperCell extends Button {
     public final int x;
@@ -16,4 +18,18 @@ public class MinesweeperCell extends Button {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MinesweeperCell that = (MinesweeperCell) o;
+        //return x == that.x && y == that.y && wasClicked == that.wasClicked && value == that.value;
+        return x == that.x && y == that.y;
+        // for now, this is all that matters. potentially not enough for other tests?
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, wasClicked, value);
+    }
 }

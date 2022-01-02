@@ -138,12 +138,17 @@ public class MinesweeperController {
     private void checkAdjacentCells( MinesweeperCell cell){
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
-            if (adjacentCell.value == 0){
-                revealCell(adjacentCell);
-                checkAdjacentCells(adjacentCell);
-            }
-            if (adjacentCell.value > 0) {
-                revealCell(adjacentCell);
+            //if adjacent cell was not checked yet
+            // (if a cell was checked, it has been disabled.)
+            //if it's a mine, don't reveal, nor check adjacent
+            if(!adjacentCell.isDisabled() && adjacentCell.value != MinesweeperCell.MINE){
+                if (adjacentCell.value == 0){
+                    revealCell(adjacentCell);
+                    checkAdjacentCells(adjacentCell);
+                }
+                else if (adjacentCell.value > 0) {
+                    revealCell(adjacentCell);
+                }
             }
         }
     }

@@ -1,3 +1,4 @@
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public class MinesweeperController {
+public class MinesweeperController  {
     @FXML
     GridPane gridPane;
     private final int boardSize = 20;
@@ -31,6 +32,9 @@ public class MinesweeperController {
     private final Image eightImage = new Image("8.svg.png");
 
 
+    public MinesweeperCell[][] getBoard(){
+        return this.board;
+    }
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -80,8 +84,11 @@ public class MinesweeperController {
         }
     }
 
-    private void addOnClick(MinesweeperCell minesweeperCell) {
+    public void addOnClick(MinesweeperCell minesweeperCell) {
+        //minesweeperCell.setOnMouseClicked(handle(mouseEvent));
         minesweeperCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+
             @Override
             public void handle(MouseEvent mouseEvent) {
                 MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
@@ -93,10 +100,12 @@ public class MinesweeperController {
                     playMove(clickedCell);
                 }
             }
+
+
         });
     }
 
-    private void flagCell(MinesweeperCell clickedCell) {
+    public void flagCell(MinesweeperCell clickedCell) {
         if (!clickedCell.wasClicked){
             clickedCell.wasClicked = true;
             ImageView flag = new ImageView(flagImage);
@@ -109,10 +118,10 @@ public class MinesweeperController {
         }
     }
 
-    private void playMove(MinesweeperCell clickedCell) {
+    public void playMove(MinesweeperCell clickedCell) {
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
-            revealAll();
+            // revealAll(); call from inside gameOver()
             gameOver();
         } else {
             revealCell(clickedCell);
@@ -124,7 +133,6 @@ public class MinesweeperController {
         return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
     }
 
-    //changed to public for now to test
     public ArrayList<MinesweeperCell> getAdjacentCells (MinesweeperCell cell){
         int x = cell.x;
         int y = cell.y;
@@ -143,7 +151,7 @@ public class MinesweeperController {
         return adjacentCells;
     }
 
-    private void checkAdjacentCells(MinesweeperCell cell){
+    public void checkAdjacentCells(MinesweeperCell cell){
         ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(cell);
         for (MinesweeperCell adjacentCell : adjacentCells){
             //if adjacent cell was not checked yet
@@ -161,7 +169,7 @@ public class MinesweeperController {
         }
     }
 
-    private void revealCell(MinesweeperCell cell) {
+    public void revealCell(MinesweeperCell cell) {
         cell.wasClicked = true;
         cell.setDisable(true);
         switch (cell.value) {
@@ -229,7 +237,8 @@ public class MinesweeperController {
 
     }
 
-    private void gameOver() {
+    public void gameOver() {
+        revealAll();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
         alert.setHeaderText("GAME OVER!");
@@ -245,4 +254,21 @@ public class MinesweeperController {
         image.setFitHeight(20);
         image.setPreserveRatio(true);
     }
+
+    /*
+    @Override
+    public void handle(MouseEvent mouseEvent) {
+        MinesweeperCell clickedCell = (MinesweeperCell) mouseEvent.getSource();
+        //right click - set flag image to button
+        if (mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+            flagCell(clickedCell);
+        }
+        else {   //regular click
+            playMove(clickedCell);
+        }
+
+
+     */
+
+
 }

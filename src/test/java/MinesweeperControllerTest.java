@@ -2,6 +2,8 @@ import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
+
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertNotNull;
@@ -12,10 +14,8 @@ import static org.mockito.Mockito.*;
 public class MinesweeperControllerTest {
     private MinesweeperController controller;
     private final int boardSize = 20;
-    private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    private GridPane gridPane;
 
-    @Test //passes, incomplete
+    @Test //incomplete
     public void constructController(){
         //given
         givenMinesweeperController();
@@ -24,11 +24,16 @@ public class MinesweeperControllerTest {
 
         //then
         assertNotNull(controller.getBoard());
-        //assert placeMines method was called
+        assertEquals(0, controller.board[0][0].x);
+        assertEquals(0, controller.board[0][0].y);
+        assertEquals(19,controller.board[19][19].x);
+        assertEquals(19,controller.board[19][19].y);
+        //check that mines were placed on board (iterate through board, count mines)
+
     }
 
-    @Test //fails, gridPane
-    public void initialize(){ //TO DO
+    @Test
+    public void initialize(){
         //given
         givenMinesweeperController();
 
@@ -37,19 +42,14 @@ public class MinesweeperControllerTest {
 
         //then
         //verify cells placed on gridPane
-        //verify addOnClick method called, and works
+        //verify setOnMouseClicked
     }
 
-    @Test //TO DO
-    public void addOnClick(){
-
-    }
-
-    @Test //passes, incomplete
+    @Test //incomplete
     public void flagCell(){
         //given
         givenMinesweeperController();
-        MinesweeperCell sampleUnClickedCell = board[1][0]; //(move to given method?)
+        MinesweeperCell sampleUnClickedCell = controller.board[1][0]; //(move to given method?)
 
         //when
         controller.flagCell(sampleUnClickedCell);
@@ -58,15 +58,16 @@ public class MinesweeperControllerTest {
         assertTrue(sampleUnClickedCell.wasClicked);
         assertNotNull(sampleUnClickedCell.getGraphic());
         //check that image was set to the flag specifically
+        //use .getGraphic, cast to ImageView, check it's the right image
 
 
 
     }
 
-    @Test //fails, cell is null, incomplete
+    @Test //fails, this.controller is null?
     public void unFlagCell(){
         //given
-        MinesweeperCell sampleClickedCell = board[1][0]; //(move to given method?)
+        MinesweeperCell sampleClickedCell = controller.board[1][0]; //(move to given method?)
         sampleClickedCell.wasClicked = true; // why is cell null?
 
         //when
@@ -75,34 +76,32 @@ public class MinesweeperControllerTest {
         //then
         assertFalse(sampleClickedCell.wasClicked);
         assertNull(sampleClickedCell.getGraphic());
-
-
-
     }
 
-    @Test //fails,incomplete
+    @Test //incomplete
     public void playMoveMine (){
         //given
         givenMinesweeperController();
-        MinesweeperCell clickedCell = board[2][1];
+        MinesweeperCell clickedCell = controller.board[2][1];
         clickedCell.value = MinesweeperCell.MINE;
+        //(ImageView) clickedCell.getGraphic()
 
         //when
         controller.playMove(clickedCell);
 
         //then
-        //this is only with mocks though?
-        verify(controller).gameOver();
-        //verify gameOver method called
+        //check cells were disabled/ .wasClicked =true
+        //verify gameOver method called by checking cells were revealed
+        //repetitive, so skip?
     }
 
-    @Test //passes (tests isOnGrid automatically)
+    @Test
     public void getAdjacentCells(){
         //given
         givenMinesweeperController();
 
         ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
-        MinesweeperCell sampleCell = board[1][0];
+        MinesweeperCell sampleCell = controller.board[1][0];
 
 
         //top left off grid
@@ -121,40 +120,24 @@ public class MinesweeperControllerTest {
         assertEquals(adjacentCells,expectedAdjacentCells);
     }
 
-    @Test // TO DO (how to test recursion?)
-    public void checkAdjacentCells(){
-        //given
-        givenMinesweeperController();
-        MinesweeperCell clickedCell = board [1][3];
 
-        //when
-        controller.checkAdjacentCells(clickedCell);
+    @Test  //TO DO
+    public void handle(){}
 
-        //then
-
-    }
-
-    @Test //TO DO (will test setImageSize() method)
+    @Test //TO DO
     public void revealCell (){
-
-    }
-
-    @Test // TO DO ( will test revealAll() method )
-    public void gameOver(){
-
+        //test that images are set properly
+        //use .getGraphic, cast to ImageView, check it's the right image
+        //repetitive?
     }
 
     private void givenMinesweeperController() {
         controller = new MinesweeperController();
-        //controller = mock(MinesweeperController.class);
-        // should this code go here?
         for (int x = 0; x < boardSize; x++){
             for(int y = 0; y < boardSize; y++){
-                //board[x][y] = mock(MinesweeperCell.class);
-                board[x][y] = new MinesweeperCell(x,y);
+                controller.board[x][y] = new MinesweeperCell(x,y);
             }
         }
-       //test placeMines method?
-        gridPane = mock(GridPane.class);
+        controller.gridPane = mock(GridPane.class);
     }
 }

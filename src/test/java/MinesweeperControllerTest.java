@@ -99,6 +99,7 @@ public class MinesweeperControllerTest {
 
         //then
         //check cells were disabled/ .wasClicked =true?
+        assertTrue(clickedCell.wasClicked);
         //verify gameOver method called by checking cells were revealed
         //repetitive, so skip?
     }
@@ -131,11 +132,25 @@ public class MinesweeperControllerTest {
     @Test  //TODO
     public void handle(){}
 
-    @Test //TODO
+    @Test
     public void revealCell (){
-        //test that images are set properly
-        //use .getGraphic, cast to ImageView, check it's the right image
-        //repetitive?
+        //given
+        givenMinesweeperController();
+        MinesweeperCell cell = controller.board[1][0];
+        cell.wasClicked = true;
+        cell.setDisable(true);
+        cell.value = 2;
+
+        //when
+        controller.revealCell(cell);
+
+        //then
+        ImageView node = (ImageView) cell.getGraphic();
+        Image image = node.getImage();
+        assertNotNull(image);
+        //check that image was set to the twoImage since value = 2
+        assertEquals(image, controller.twoImage);
+
     }
 
     private void givenMinesweeperController() {

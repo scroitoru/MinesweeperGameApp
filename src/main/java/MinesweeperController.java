@@ -41,7 +41,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 board[x][y] = new MinesweeperCell(x,y);
             }
         }
-        placeMines();
     }
 
     public MinesweeperCell[][] getBoard(){
@@ -49,6 +48,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void initialize (){
+        placeMines();
         //loop through the 2d array of buttons and place them on the board
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
@@ -56,9 +56,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 board[x][y].setMaxSize(24,20);
                 gridPane.add(board[x][y],x, y);
                 board[x][y].setOnMouseClicked(this);
-
                 //set button image sizes
-
             }
         }
     }

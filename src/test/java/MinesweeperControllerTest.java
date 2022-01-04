@@ -12,10 +12,11 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class MinesweeperControllerTest {
+
     private MinesweeperController controller;
     private final int boardSize = 20;
 
-    @Test //incomplete
+    @Test
     public void constructController(){
         //given
         givenMinesweeperController();
@@ -28,11 +29,9 @@ public class MinesweeperControllerTest {
         assertEquals(0, controller.board[0][0].y);
         assertEquals(19,controller.board[19][19].x);
         assertEquals(19,controller.board[19][19].y);
-        //check that mines were placed on board (iterate through board, count mines)
-
     }
 
-    @Test
+    @Test //incomplete
     public void initialize(){
         //given
         givenMinesweeperController();
@@ -41,6 +40,15 @@ public class MinesweeperControllerTest {
         controller.initialize();
 
         //then
+        int nrMinesPlaced = 0;
+        for (int x = 0; x < boardSize; x++){
+            for(int y = 0; y < boardSize; y++){
+                if(controller.board[x][y].value == MinesweeperCell.MINE){
+                    nrMinesPlaced++;
+                }
+            }
+        }
+        assertEquals(50,nrMinesPlaced);
         //verify cells placed on gridPane
         //verify setOnMouseClicked
     }
@@ -78,19 +86,18 @@ public class MinesweeperControllerTest {
         assertNull(sampleClickedCell.getGraphic());
     }
 
-    @Test //incomplete
+    @Test //incomplete, fails? IllegalStateException
     public void playMoveMine (){
         //given
         givenMinesweeperController();
         MinesweeperCell clickedCell = controller.board[2][1];
         clickedCell.value = MinesweeperCell.MINE;
-        //(ImageView) clickedCell.getGraphic()
 
         //when
         controller.playMove(clickedCell);
 
         //then
-        //check cells were disabled/ .wasClicked =true
+        //check cells were disabled/ .wasClicked =true?
         //verify gameOver method called by checking cells were revealed
         //repetitive, so skip?
     }
@@ -119,7 +126,6 @@ public class MinesweeperControllerTest {
         //then
         assertEquals(adjacentCells,expectedAdjacentCells);
     }
-
 
     @Test  //TO DO
     public void handle(){}

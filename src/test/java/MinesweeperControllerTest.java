@@ -54,7 +54,7 @@ public class MinesweeperControllerTest {
         //verify setOnMouseClicked
     }
 
-    @Test //incomplete
+    @Test
     public void flagCell(){
         //given
         givenMinesweeperController();

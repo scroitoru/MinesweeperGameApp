@@ -1,6 +1,8 @@
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,7 +75,8 @@ public class MinesweeperControllerTest {
         assertEquals(image, controller.flagImage);
     }
 
-    @Test //TODO fails, this.controller is null?
+    @Test
+    //TODO fails, this.controller is null?
     public void unFlagCell(){
         //given
         MinesweeperCell sampleClickedCell = controller.board[1][0]; //(move to given method?)
@@ -87,7 +90,8 @@ public class MinesweeperControllerTest {
         assertNull(sampleClickedCell.getGraphic());
     }
 
-    @Test //TODO incomplete, fails? IllegalStateException
+    @Test
+    //TODO incomplete, fails? IllegalStateException
     public void playMoveMine (){
         //given
         givenMinesweeperController();
@@ -130,7 +134,19 @@ public class MinesweeperControllerTest {
     }
 
     @Test  //TODO
-    public void handle(){}
+    public void handle(){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell clickedCell = controller.board[1][0];
+        MouseEvent event = mock(MouseEvent.class);
+        event.getButton().equals(MouseButton.SECONDARY);
+
+        //when
+        controller.handle(event);
+
+        //then
+
+    }
 
     @Test
     public void revealCell (){

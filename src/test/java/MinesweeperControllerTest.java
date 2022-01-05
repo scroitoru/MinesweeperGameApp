@@ -133,20 +133,6 @@ public class MinesweeperControllerTest {
         assertEquals(adjacentCells,expectedAdjacentCells);
     }
 
-    @Test  //TODO
-    public void handle(){
-        //given
-        givenMinesweeperController();
-        MinesweeperCell clickedCell = controller.board[1][0];
-        MouseEvent event = mock(MouseEvent.class);
-        event.getButton().equals(MouseButton.SECONDARY);
-
-        //when
-        controller.handle(event);
-
-        //then
-
-    }
 
     @Test
     public void revealCell (){
@@ -178,4 +164,6 @@ public class MinesweeperControllerTest {
         }
         controller.gridPane = mock(GridPane.class);
     }
+
+    //no need for handle() test, repetitive, already tested through flagCell and playMove
 }

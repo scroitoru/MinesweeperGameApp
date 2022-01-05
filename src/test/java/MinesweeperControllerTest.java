@@ -1,12 +1,14 @@
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
-
-import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
-
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +26,7 @@ public class MinesweeperControllerTest {
         //when
 
         //then
-        assertNotNull(controller.getBoard());
+        Assertions.assertNotNull(controller.getBoard());
         assertEquals(0, controller.board[0][0].x);
         assertEquals(0, controller.board[0][0].y);
         assertEquals(19,controller.board[19][19].x);
@@ -49,11 +51,12 @@ public class MinesweeperControllerTest {
             }
         }
         assertEquals(50,nrMinesPlaced);
+        //TODO
         //verify cells placed on gridPane
         //verify setOnMouseClicked
     }
 
-    @Test //incomplete
+    @Test
     public void flagCell(){
         //given
         givenMinesweeperController();
@@ -64,15 +67,16 @@ public class MinesweeperControllerTest {
 
         //then
         assertTrue(sampleUnClickedCell.wasClicked);
-        assertNotNull(sampleUnClickedCell.getGraphic());
-        //check that image was set to the flag specifically
         //use .getGraphic, cast to ImageView, check it's the right image
-
-
-
+        ImageView node = (ImageView) sampleUnClickedCell.getGraphic();
+        Image image = node.getImage();
+        assertNotNull(image);
+        //check that image was set to the flag specifically
+        assertEquals(image, controller.flagImage);
     }
 
-    @Test //fails, this.controller is null?
+    @Test
+    //TODO fails, this.controller is null?
     public void unFlagCell(){
         //given
         MinesweeperCell sampleClickedCell = controller.board[1][0]; //(move to given method?)
@@ -86,7 +90,8 @@ public class MinesweeperControllerTest {
         assertNull(sampleClickedCell.getGraphic());
     }
 
-    @Test //incomplete, fails? IllegalStateException
+    @Test
+    //TODO incomplete, fails? IllegalStateException
     public void playMoveMine (){
         //given
         givenMinesweeperController();
@@ -98,6 +103,7 @@ public class MinesweeperControllerTest {
 
         //then
         //check cells were disabled/ .wasClicked =true?
+        assertTrue(clickedCell.wasClicked);
         //verify gameOver method called by checking cells were revealed
         //repetitive, so skip?
     }
@@ -127,14 +133,40 @@ public class MinesweeperControllerTest {
         assertEquals(adjacentCells,expectedAdjacentCells);
     }
 
-    @Test  //TO DO
-    public void handle(){}
+    @Test  //TODO
+    public void handle(){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell clickedCell = controller.board[1][0];
+        MouseEvent event = mock(MouseEvent.class);
+        event.getButton().equals(MouseButton.SECONDARY);
 
-    @Test //TO DO
+        //when
+        controller.handle(event);
+
+        //then
+
+    }
+
+    @Test
     public void revealCell (){
-        //test that images are set properly
-        //use .getGraphic, cast to ImageView, check it's the right image
-        //repetitive?
+        //given
+        givenMinesweeperController();
+        MinesweeperCell cell = controller.board[1][0];
+        cell.wasClicked = true;
+        cell.setDisable(true);
+        cell.value = 2;
+
+        //when
+        controller.revealCell(cell);
+
+        //then
+        ImageView node = (ImageView) cell.getGraphic();
+        Image image = node.getImage();
+        assertNotNull(image);
+        //check that image was set to the twoImage since value = 2
+        assertEquals(image, controller.twoImage);
+
     }
 
     private void givenMinesweeperController() {

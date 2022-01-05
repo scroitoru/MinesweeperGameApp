@@ -31,6 +31,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     public final Image sixImage = new Image("6.svg.png");
     public final Image sevenImage = new Image("7.svg.png");
     public final Image eightImage = new Image("8.svg.png");
+    private boolean firstMove = true;
 
 
 
@@ -48,7 +49,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void initialize (){
-        placeMines();
         //loop through the 2d array of buttons and place them on the board
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
@@ -61,15 +61,18 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         }
     }
 
-    private void placeMines() {
+    public void placeMines(MinesweeperCell clickedCell) {
         int nrMines = 50;
         Random randomInt = new Random();
+        int chosenX = clickedCell.x;
+        int chosenY = clickedCell.y;
         int x, y;
         while (nrMines > 0) {
             x = randomInt.nextInt(boardSize);
             y = randomInt.nextInt(boardSize);
             MinesweeperCell randomCell = board[x][y];
-            if (randomCell.value != MinesweeperCell.MINE) {
+            if (randomCell.x != chosenX && randomCell.y != chosenY //don't place mine in clickedCell
+                    && randomCell.value != MinesweeperCell.MINE) {
                 randomCell.value = MinesweeperCell.MINE;
                 //increment adjacent cells
                 ArrayList<MinesweeperCell> adjacentCells  = getAdjacentCells(randomCell);
@@ -99,6 +102,10 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void playMove(MinesweeperCell clickedCell) {
+        if(firstMove){
+            placeMines(clickedCell);
+            firstMove = false;
+        }
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
             gameOver();

@@ -42,15 +42,7 @@ public class MinesweeperControllerTest {
         controller.initialize();
 
         //then
-        int nrMinesPlaced = 0;
-        for (int x = 0; x < boardSize; x++){
-            for(int y = 0; y < boardSize; y++){
-                if(controller.board[x][y].value == MinesweeperCell.MINE){
-                    nrMinesPlaced++;
-                }
-            }
-        }
-        assertEquals(50,nrMinesPlaced);
+
         //TODO
         //verify cells placed on gridPane
         //verify setOnMouseClicked
@@ -67,7 +59,6 @@ public class MinesweeperControllerTest {
 
         //then
         assertTrue(sampleUnClickedCell.wasClicked);
-        //use .getGraphic, cast to ImageView, check it's the right image
         ImageView node = (ImageView) sampleUnClickedCell.getGraphic();
         Image image = node.getImage();
         assertNotNull(image);
@@ -108,6 +99,29 @@ public class MinesweeperControllerTest {
         //repetitive, so skip?
     }
 
+    @Test
+    public void placeMines(){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell clickedCell = controller.board[5][5];
+
+        //when
+        controller.placeMines(clickedCell);
+
+        //then
+        int nrMinesPlaced = 0;
+        for (int x = 0; x < boardSize; x++){
+            for(int y = 0; y < boardSize; y++){
+                if(controller.board[x][y].value == MinesweeperCell.MINE){
+                    nrMinesPlaced++;
+                }
+            }
+        }
+        assertEquals(50,nrMinesPlaced);
+        assertNotEquals(MinesweeperCell.MINE, controller.board[5][5].value);
+
+
+    }
     @Test
     public void getAdjacentCells(){
         //given

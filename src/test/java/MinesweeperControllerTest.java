@@ -1,19 +1,39 @@
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class MinesweeperControllerTest {
+
     private MinesweeperController controller;
     private final int boardSize = 20;
-    private MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
-    private GridPane gridPane;
-    // how to test constructor? especially since constructor calls placeMines() method
+
     @Test
+    public void constructController(){
+        //given
+        givenMinesweeperController();
+
+        //when
+
+        //then
+        Assertions.assertNotNull(controller.getBoard());
+        assertEquals(0, controller.board[0][0].x);
+        assertEquals(0, controller.board[0][0].y);
+        assertEquals(19,controller.board[19][19].x);
+        assertEquals(19,controller.board[19][19].y);
+    }
+
+    @Test //incomplete
     public void initialize(){
         //given
         givenMinesweeperController();
@@ -22,18 +42,80 @@ public class MinesweeperControllerTest {
         controller.initialize();
 
         //then
+        int nrMinesPlaced = 0;
+        for (int x = 0; x < boardSize; x++){
+            for(int y = 0; y < boardSize; y++){
+                if(controller.board[x][y].value == MinesweeperCell.MINE){
+                    nrMinesPlaced++;
+                }
+            }
+        }
+        assertEquals(50,nrMinesPlaced);
+        //TODO
         //verify cells placed on gridPane
-        //verify addOnClick method called, and works
+        //verify setOnMouseClicked
+    }
 
+    @Test
+    public void flagCell(){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell sampleUnClickedCell = controller.board[1][0]; //(move to given method?)
+
+        //when
+        controller.flagCell(sampleUnClickedCell);
+
+        //then
+        assertTrue(sampleUnClickedCell.wasClicked);
+        //use .getGraphic, cast to ImageView, check it's the right image
+        ImageView node = (ImageView) sampleUnClickedCell.getGraphic();
+        Image image = node.getImage();
+        assertNotNull(image);
+        //check that image was set to the flag specifically
+        assertEquals(image, controller.flagImage);
+    }
+
+    @Test
+    //TODO fails, this.controller is null?
+    public void unFlagCell(){
+        //given
+        MinesweeperCell sampleClickedCell = controller.board[1][0]; //(move to given method?)
+        sampleClickedCell.wasClicked = true; // why is cell null?
+
+        //when
+        controller.flagCell(sampleClickedCell);
+
+        //then
+        assertFalse(sampleClickedCell.wasClicked);
+        assertNull(sampleClickedCell.getGraphic());
+    }
+
+    @Test
+    //TODO incomplete, fails? IllegalStateException
+    public void playMoveMine (){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell clickedCell = controller.board[2][1];
+        clickedCell.value = MinesweeperCell.MINE;
+
+        //when
+        controller.playMove(clickedCell);
+
+        //then
+        //check cells were disabled/ .wasClicked =true?
+        assertTrue(clickedCell.wasClicked);
+        //verify gameOver method called by checking cells were revealed
+        //repetitive, so skip?
     }
 
     @Test
     public void getAdjacentCells(){
         //given
         givenMinesweeperController();
+
         ArrayList<MinesweeperCell> expectedAdjacentCells = new ArrayList<>();
-        //MinesweeperCell sampleCell = new MinesweeperCell(1,0);
-        MinesweeperCell sampleCell = board[1][0];
+        MinesweeperCell sampleCell = controller.board[1][0];
+
 
         //top left off grid
         expectedAdjacentCells.add(new MinesweeperCell(0,0)); //left
@@ -49,19 +131,39 @@ public class MinesweeperControllerTest {
 
         //then
         assertEquals(adjacentCells,expectedAdjacentCells);
+    }
+
+
+    @Test
+    public void revealCell (){
+        //given
+        givenMinesweeperController();
+        MinesweeperCell cell = controller.board[1][0];
+        cell.wasClicked = true;
+        cell.setDisable(true);
+        cell.value = 2;
+
+        //when
+        controller.revealCell(cell);
+
+        //then
+        ImageView node = (ImageView) cell.getGraphic();
+        Image image = node.getImage();
+        assertNotNull(image);
+        //check that image was set to the twoImage since value = 2
+        assertEquals(image, controller.twoImage);
 
     }
 
     private void givenMinesweeperController() {
         controller = new MinesweeperController();
-        // should this code go here?
         for (int x = 0; x < boardSize; x++){
             for(int y = 0; y < boardSize; y++){
-                //board[x][y] = mock(MinesweeperCell.class);
-                board[x][y] = new MinesweeperCell(x,y);
+                controller.board[x][y] = new MinesweeperCell(x,y);
             }
         }
-       //test placeMines method?
-        gridPane = mock(GridPane.class);
+        controller.gridPane = mock(GridPane.class);
     }
+
+    //no need for handle() test, repetitive, already tested through flagCell and playMove
 }

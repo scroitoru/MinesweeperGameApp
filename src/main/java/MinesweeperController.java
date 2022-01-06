@@ -17,7 +17,8 @@ import java.util.Random;
 
 public class MinesweeperController implements EventHandler<MouseEvent> {
     @FXML
-    GridPane gridPane;
+    public GridPane gridPane;
+    private boolean firstMove = true;
     private final int boardSize = 20;
     public MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
     public final Image flagImage = new Image("flag.svg.png");
@@ -31,10 +32,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     public final Image sixImage = new Image("6.svg.png");
     public final Image sevenImage = new Image("7.svg.png");
     public final Image eightImage = new Image("8.svg.png");
-    private boolean firstMove = true;
-
-
-
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -263,42 +260,52 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 //only relevant if current cell is uncovered
                 MinesweeperCell currentCell = board[x][y];
                 if (currentCell.isRevealed) {
-                    // if cell's nr of available (aka not revealed) adjacent cells == cell value,
-                    // place flags in all those cells
                     ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(currentCell);
-                    ArrayList<MinesweeperCell> coveredAdjCells = new ArrayList<>();
-                    for (MinesweeperCell adjacentCell : adjacentCells) {
-                        if (!adjacentCell.isRevealed) {
-                            coveredAdjCells.add(adjacentCell);
-                        }
-                    }
-                    int nrCoveredAdjacentCells = coveredAdjCells.size();
-                    if (nrCoveredAdjacentCells > 0 && nrCoveredAdjacentCells == currentCell.value) {
-                        for (MinesweeperCell cell : coveredAdjCells) {
-                            if (!cell.isFlagged) {
-                                flagCell(cell);
-                            }
-                        }
-                    }
+                    flagMines(currentCell, adjacentCells);
+                    findEmptyCells(currentCell,adjacentCells);
+                }
+                //TO DO: add logic for if get stuck -> choose randomly
+                // (but not within loop, if no action for this cell, go through board again etc.
+                //only if went through full board and no other option)
+            }
+        }
+    }
 
-                    // if cell's conditions are satisfied,(nrFlagged cells = value)
-                    // click every adjacent unRevealed and unFlagged cell
-                    int nrAdjFlaggedCells = 0;
-                    for (MinesweeperCell adjacentCell : adjacentCells) {
-                        if (adjacentCell.isFlagged) {
-                            nrAdjFlaggedCells++;
-                        }
-                    }
-                    if (nrAdjFlaggedCells == currentCell.value){
-                        for (MinesweeperCell adjacentCell : adjacentCells) {
-                            if (!adjacentCell.isFlagged && !adjacentCell.isRevealed){
-                                playMove(adjacentCell);
-                            }
-                        }
-                    }
-                //last step: random move
+    private void findEmptyCells(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
+        // if cell's conditions are satisfied,(nrAdjFlagged cells = value)
+        // click every adjacent unRevealed and unFlagged cell
+        int nrAdjFlaggedCells = 0;
+        for (MinesweeperCell adjacentCell : adjacentCells) {
+            if (adjacentCell.isFlagged) {
+                nrAdjFlaggedCells++;
+            }
+        }
+        if (nrAdjFlaggedCells == currentCell.value){
+            for (MinesweeperCell adjacentCell : adjacentCells) {
+                if (!adjacentCell.isFlagged && !adjacentCell.isRevealed){
+                    playMove(adjacentCell);
                 }
             }
         }
+    }
+
+    private void flagMines(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
+        // if cell's nr of available (aka not revealed) adjacent cells == cell value,
+        // place flags in all those cells
+        ArrayList<MinesweeperCell> coveredAdjCells = new ArrayList<>();
+        for (MinesweeperCell adjacentCell : adjacentCells) {
+            if (!adjacentCell.isRevealed) {
+                coveredAdjCells.add(adjacentCell);
+            }
+        }
+        int nrCoveredAdjacentCells = coveredAdjCells.size();
+        if (nrCoveredAdjacentCells > 0 && nrCoveredAdjacentCells == currentCell.value) {
+            for (MinesweeperCell cell : coveredAdjCells) {
+                if (!cell.isFlagged) {
+                    flagCell(cell);
+                }
+            }
+        }
+
     }
 }

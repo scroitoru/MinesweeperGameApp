@@ -43,14 +43,7 @@ public class MinesweeperControllerTest {
         controller.initialize();
 
         //then
-
-        //TODO
-        //verify cells placed on gridPane
-//        assertEquals(20, gridPane.getColumnCount());//fails
-//        assertEquals(20, gridPane.getRowCount());//fails
-        int gridSize = gridPane.getRowConstraints().size(); //why is it null?
-        Assertions.assertEquals(20, gridSize);
-
+        verify(gridPane, times(400)).add(any(),anyInt(),anyInt());
     }
 
     @Test

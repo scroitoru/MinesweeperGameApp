@@ -1,8 +1,5 @@
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

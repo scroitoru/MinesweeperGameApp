@@ -82,15 +82,15 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void flagCell(MinesweeperCell clickedCell) {
-        if (!isFlagged(clickedCell)){ //!clickedCell.wasClicked
+        if (isFlagged(clickedCell)){
+            clickedCell.wasClicked = false; //un-click cell , still needed?
+            clickedCell.setGraphic(null); //remove flag
+        }
+        else {
             clickedCell.wasClicked = true; //still needed?
             ImageView flag = new ImageView(flagImage);
             setImageSize(flag);
             clickedCell.setGraphic(flag);
-        }
-        else {
-            clickedCell.wasClicked = false; //un-click cell , still needed?
-            clickedCell.setGraphic(null); //remove flag
         }
     }
 
@@ -303,6 +303,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         return image == flagImage;
 
     }
+
     private boolean isRevealed(MinesweeperCell cell){
         Image image = ((ImageView) cell.getGraphic()).getImage();
         return image != blankImage;

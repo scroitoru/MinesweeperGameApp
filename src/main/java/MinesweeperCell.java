@@ -7,7 +7,6 @@ import java.util.Objects;
 public class MinesweeperCell extends Button {
     public final int x;
     public final int y;
-    public boolean wasClicked;
     public int value; // value = MINE or 0-8: nrOfAdjacent mines
     public static final int MINE = -1;
 
@@ -29,6 +28,6 @@ public class MinesweeperCell extends Button {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, wasClicked, value);
+        return Objects.hash(x, y,value);
     }
 }

@@ -1,4 +1,3 @@
-
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -83,11 +82,9 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
 
     public void flagCell(MinesweeperCell clickedCell) {
         if (isFlagged(clickedCell)){
-            clickedCell.wasClicked = false; //un-click cell , still needed?
             clickedCell.setGraphic(null); //remove flag
         }
         else {
-            clickedCell.wasClicked = true; //still needed?
             ImageView flag = new ImageView(flagImage);
             setImageSize(flag);
             clickedCell.setGraphic(flag);
@@ -145,7 +142,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void revealCell(MinesweeperCell cell) {
-        cell.wasClicked = true;
         cell.setDisable(true);
         switch (cell.value) {
             case MinesweeperCell.MINE:
@@ -253,9 +249,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                     flagMines(currentCell, adjacentCells);
                     clickAdjSafeCells(currentCell,adjacentCells);
                 }
-                //TO DO: add logic for if get stuck -> choose randomly
-                // (but not within loop, if no action for this cell, go through board again etc.
-                //only if went through full board and no other option)
             }
         }
     }

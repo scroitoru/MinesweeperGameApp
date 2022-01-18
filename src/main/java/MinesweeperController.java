@@ -99,9 +99,12 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         int cellValue = clickedCell.value;
         if (cellValue == MinesweeperCell.MINE) {
             gameOver();
-        } else {
+        }
+        else {
             revealCell(clickedCell);
-            checkAdjacentCells(clickedCell);
+            if (cellValue == 0 ){
+                checkAdjacentCells(clickedCell);
+            }
         }
     }
 
@@ -115,7 +118,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         ArrayList<MinesweeperCell> adjacentCells = new ArrayList<>();
         for(int ix = x-1; ix <= x+1; ix++){
             for(int iy = y-1; iy <= y+1; iy++){
-                if(ix != x && iy != y && isOnGrid(ix,iy)){ //don't add cell with original x,y
+                if(!(ix == x && iy == y) && isOnGrid(ix,iy)){ //don't add cell with original x,y
                     adjacentCells.add(board[ix][iy]);
                 }
             }
@@ -292,13 +295,19 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     private boolean isFlagged(MinesweeperCell cell){
-        Image image = ((ImageView) cell.getGraphic()).getImage();
-        return image == flagImage;
+        ImageView imageView = (ImageView) cell.getGraphic();
+        if (imageView == null){
+            return false;
+        }
+        return  imageView.getImage() == flagImage;
 
     }
 
     private boolean isRevealed(MinesweeperCell cell){
-        Image image = ((ImageView) cell.getGraphic()).getImage();
-        return image != blankImage;
+        ImageView imageView = (ImageView) cell.getGraphic();
+        if (imageView == null){
+           return false;
+        }
+        return  imageView.getImage() != blankImage;
     }
 }

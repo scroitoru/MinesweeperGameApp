@@ -119,18 +119,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         }
     }
 
-    private void gameWon() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Congratulation!");
-        alert.setHeaderText("You won!");
-        alert.setContentText("You uncovered all the cells and didn't land on any mines! \n Great job!");
-        alert.showAndWait().ifPresent(rs -> {
-            if (rs == ButtonType.OK) {
-                System.exit(1);
-            }
-        });
-    }
-
     private boolean isOnGrid (int x, int y){
         return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
     }
@@ -247,8 +235,20 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         revealAll();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
-        alert.setHeaderText("GAME OVER!");
+        alert.setHeaderText("You lost!");
         alert.setContentText("Sorry, you landed on a mine!\n You lost :(");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.exit(1);
+            }
+        });
+    }
+
+    private void gameWon() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Congratulations!");
+        alert.setHeaderText("You won!");
+        alert.setContentText("You uncovered all the cells and didn't land on any mines! \n Great job!");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 System.exit(1);

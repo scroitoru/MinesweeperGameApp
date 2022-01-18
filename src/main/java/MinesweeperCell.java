@@ -11,7 +11,7 @@ public class MinesweeperCell extends Button {
     public static final int MINE = -1;
 
     public MinesweeperCell(int x, int y) {
-        //use these to determine row and column indexes when adding them to the gridPane
+        //use these to determine row and column indexes when adding cells to the gridPane
         this.x = x;
         this.y = y;
     }
@@ -21,9 +21,7 @@ public class MinesweeperCell extends Button {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MinesweeperCell that = (MinesweeperCell) o;
-        //return x == that.x && y == that.y && wasClicked == that.wasClicked && value == that.value;
         return x == that.x && y == that.y;
-        // for now, this is all that matters. potentially not enough for other tests?
     }
 
     @Override

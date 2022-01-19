@@ -13,7 +13,6 @@ import java.util.Random;
 public class MinesweeperController implements EventHandler<MouseEvent> {
     @FXML
     public GridPane gridPane;
-    private boolean firstMove = true;
     private final int boardSize = 20;
     public MinesweeperCell[][] board = new MinesweeperCell[boardSize][boardSize];
     public final Image flagImage = new Image("flag.svg.png");
@@ -27,6 +26,11 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     public final Image sixImage = new Image("6.svg.png");
     public final Image sevenImage = new Image("7.svg.png");
     public final Image eightImage = new Image("8.svg.png");
+    private boolean firstMove = true;
+    //change number of mines according to level
+    private final int nrMines = 50;
+    private int unrevealedCells;
+
 
     public MinesweeperController(){
         for (int x = 0; x < boardSize; x++){
@@ -34,6 +38,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 board[x][y] = new MinesweeperCell(x,y);
             }
         }
+        unrevealedCells = boardSize * boardSize;
     }
 
     public MinesweeperCell[][] getBoard(){
@@ -54,12 +59,12 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void placeMines(MinesweeperCell clickedCell) {
-        int nrMines = 50;
         Random randomInt = new Random();
         int chosenX = clickedCell.x;
         int chosenY = clickedCell.y;
         int x, y;
-        while (nrMines > 0) {
+        int placedMines = 0;
+        while (placedMines < nrMines) {
             x = randomInt.nextInt(boardSize);
             y = randomInt.nextInt(boardSize);
             MinesweeperCell randomCell = board[x][y];
@@ -74,8 +79,8 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                         adjacentCell.value++;
                     }
                 }
-                //decrement mines left to place
-                nrMines--;
+                //increment number of placed mines
+                placedMines++;
             }
         }
     }
@@ -104,6 +109,9 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
             revealCell(clickedCell);
             if (cellValue == 0 ){
                 checkAdjacentCells(clickedCell);
+            }
+            if (unrevealedCells == nrMines){
+                gameWon();
             }
         }
     }
@@ -201,12 +209,15 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
             default:
                 cell.setGraphic(null);
         }
+        unrevealedCells--;
     }
 
     private void revealAll() {
         for (MinesweeperCell[]row: board) {
             for (MinesweeperCell cell: row) {
-                revealCell(cell);
+                if (!cell.isDisabled()){
+                    revealCell(cell);
+                }
             }
         }
 
@@ -216,8 +227,20 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         revealAll();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game Over");
-        alert.setHeaderText("GAME OVER!");
-        alert.setContentText("GAME OVER");
+        alert.setHeaderText("You lost!");
+        alert.setContentText("Sorry, you landed on a mine!\n You lost :(");
+        alert.showAndWait().ifPresent(rs -> {
+            if (rs == ButtonType.OK) {
+                System.exit(1);
+            }
+        });
+    }
+
+    private void gameWon() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Congratulations!");
+        alert.setHeaderText("You won!");
+        alert.setContentText("You uncovered all the cells and didn't land on any mines! \n Great job!");
         alert.showAndWait().ifPresent(rs -> {
             if (rs == ButtonType.OK) {
                 System.exit(1);

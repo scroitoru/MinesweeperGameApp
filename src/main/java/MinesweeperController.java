@@ -28,7 +28,8 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     public final Image eightImage = new Image("8.svg.png");
     private boolean firstMove = true;
     //change number of mines according to level
-    private final int nrMines = 50;
+    //change back to 50
+    private final int nrMines = 20;
     private int unrevealedCells;
 
 
@@ -266,11 +267,12 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void playBestStrategy(){
+        //problems: if first move
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
                 //only relevant if current cell is uncovered
                 MinesweeperCell currentCell = board[x][y];
-                if (isRevealed(currentCell)) {
+                if (isRevealed(currentCell) && !isFlagged(currentCell)) { //isRevealed returns true for a flagged cell
                     ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(currentCell);
                     flagMines(currentCell, adjacentCells);
                     clickAdjSafeCells(currentCell,adjacentCells);
@@ -286,23 +288,24 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         for (MinesweeperCell adjacentCell : adjacentCells) {
             if (isFlagged(adjacentCell)) {
                 nrAdjFlaggedCells++;
+                System.out.println("counted adj flagged");
             }
         }
         if (nrAdjFlaggedCells == currentCell.value){
             for (MinesweeperCell adjacentCell : adjacentCells) {
                 if (!isFlagged(adjacentCell) && !isRevealed(adjacentCell)){
                     playMove(adjacentCell);
+                    System.out.println("played a move");
                 }
             }
         }
     }
 
-    private void flagMines(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
-        // if cell's nr of available (aka not revealed) adjacent cells == cell value,
-        // place flags in all those cells
+    private void flagMines (MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells ){
+        // if unrevealed adjacent cells = number of mines, all those are mines, flag
         ArrayList<MinesweeperCell> coveredAdjCells = new ArrayList<>();
         for (MinesweeperCell adjacentCell : adjacentCells) {
-            if (!isRevealed(adjacentCell)) {
+            if (!isRevealed(adjacentCell) || isFlagged(adjacentCell)) { // flagged is considered revealed
                 coveredAdjCells.add(adjacentCell);
             }
         }
@@ -314,8 +317,9 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 }
             }
         }
-
     }
+
+
 
     private boolean isFlagged(MinesweeperCell cell){
         ImageView imageView = (ImageView) cell.getGraphic();
@@ -325,12 +329,12 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         return  imageView.getImage() == flagImage;
 
     }
-
+//update: flagged is considered revealed, review code and adjust accordingly
     private boolean isRevealed(MinesweeperCell cell){
         ImageView imageView = (ImageView) cell.getGraphic();
         if (imageView == null){
-           return false;
+            return false;
         }
-        return  imageView.getImage() != blankImage;
+        return true;
     }
 }

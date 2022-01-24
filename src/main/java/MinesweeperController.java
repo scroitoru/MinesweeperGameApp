@@ -28,8 +28,7 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     public final Image eightImage = new Image("8.svg.png");
     private boolean firstMove = true;
     //change number of mines according to level
-    //change back to 50
-    private final int nrMines = 20;
+    private final int nrMines = 50;
     private int unrevealedCells;
 
 
@@ -54,7 +53,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 board[x][y].setMaxSize(24,20);
                 gridPane.add(board[x][y],x, y);
                 board[x][y].setOnMouseClicked(this);
-                //set button image sizes
             }
         }
     }
@@ -267,18 +265,19 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
     }
 
     public void playBestStrategy(){
-        //problems: if first move
         for (int x = 0; x < boardSize; x++){
             for (int y = 0; y < boardSize; y++){
                 //only relevant if current cell is uncovered
                 MinesweeperCell currentCell = board[x][y];
                 if (isRevealed(currentCell) && !isFlagged(currentCell)) { //isRevealed returns true for a flagged cell
+                    //this also shouldn't run for revealed cell that is empty
                     ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(currentCell);
                     flagMines(currentCell, adjacentCells);
                     clickAdjSafeCells(currentCell,adjacentCells);
                 }
             }
         }
+        //if no move was possible, tell user
     }
 
     private void clickAdjSafeCells(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
@@ -288,14 +287,12 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         for (MinesweeperCell adjacentCell : adjacentCells) {
             if (isFlagged(adjacentCell)) {
                 nrAdjFlaggedCells++;
-                System.out.println("counted adj flagged");
             }
         }
         if (nrAdjFlaggedCells == currentCell.value){
             for (MinesweeperCell adjacentCell : adjacentCells) {
                 if (!isFlagged(adjacentCell) && !isRevealed(adjacentCell)){
                     playMove(adjacentCell);
-                    System.out.println("played a move");
                 }
             }
         }

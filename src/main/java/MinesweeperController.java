@@ -53,7 +53,6 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 board[x][y].setMaxSize(24,20);
                 gridPane.add(board[x][y],x, y);
                 board[x][y].setOnMouseClicked(this);
-                //set button image sizes
             }
         }
     }
@@ -270,13 +269,15 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
             for (int y = 0; y < boardSize; y++){
                 //only relevant if current cell is uncovered
                 MinesweeperCell currentCell = board[x][y];
-                if (isRevealed(currentCell)) {
+                if (isRevealed(currentCell) && !isFlagged(currentCell)) { //isRevealed returns true for a flagged cell
+                    //this also shouldn't run for revealed cell that is empty
                     ArrayList<MinesweeperCell> adjacentCells = getAdjacentCells(currentCell);
                     flagMines(currentCell, adjacentCells);
                     clickAdjSafeCells(currentCell,adjacentCells);
                 }
             }
         }
+        //if no move was possible, tell user
     }
 
     private void clickAdjSafeCells(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
@@ -297,12 +298,11 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
         }
     }
 
-    private void flagMines(MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells) {
-        // if cell's nr of available (aka not revealed) adjacent cells == cell value,
-        // place flags in all those cells
+    private void flagMines (MinesweeperCell currentCell, ArrayList<MinesweeperCell> adjacentCells ){
+        // if unrevealed adjacent cells = number of mines, all those are mines, flag
         ArrayList<MinesweeperCell> coveredAdjCells = new ArrayList<>();
         for (MinesweeperCell adjacentCell : adjacentCells) {
-            if (!isRevealed(adjacentCell)) {
+            if (!isRevealed(adjacentCell) || isFlagged(adjacentCell)) { // flagged is considered revealed
                 coveredAdjCells.add(adjacentCell);
             }
         }
@@ -314,8 +314,9 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
                 }
             }
         }
-
     }
+
+
 
     private boolean isFlagged(MinesweeperCell cell){
         ImageView imageView = (ImageView) cell.getGraphic();
@@ -323,14 +324,10 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
             return false;
         }
         return  imageView.getImage() == flagImage;
-
     }
 
     private boolean isRevealed(MinesweeperCell cell){
         ImageView imageView = (ImageView) cell.getGraphic();
-        if (imageView == null){
-           return false;
-        }
-        return  imageView.getImage() != blankImage;
+        return imageView != null;
     }
 }

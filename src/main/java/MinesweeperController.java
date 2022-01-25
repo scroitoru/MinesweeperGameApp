@@ -324,14 +324,10 @@ public class MinesweeperController implements EventHandler<MouseEvent> {
             return false;
         }
         return  imageView.getImage() == flagImage;
-
     }
-//update: flagged is considered revealed, review code and adjust accordingly
+
     private boolean isRevealed(MinesweeperCell cell){
         ImageView imageView = (ImageView) cell.getGraphic();
-        if (imageView == null){
-            return false;
-        }
-        return true;
+        return imageView != null;
     }
 }
